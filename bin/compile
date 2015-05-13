@@ -103,6 +103,23 @@ sed -i s/##LEIN_VERSION##/$LEIN_VERSION/ $LEIN_BIN_PATH
 LEIN_PROFILES_SOURCE="$(dirname $0)/../opt/profiles.clj"
 cp -n $LEIN_PROFILES_SOURCE "$BUILD_DIR/.lein/profiles.clj"
 
+# install boot script
+BOOT_URL="https://github.com/boot-clj/boot/releases/download/2.0.0-rc14/boot.sh"
+BOOT_CACHE_PATH="$CACHE_DIR/boot"
+BOOT_SLUG_PATH="$BUILD_DIR/.boot/boot"
+
+if [ ! -r "$BOOT_CACHE_PATH" ]; then
+    echo "-----> Installing Boot"
+    echo "       Downloading: 2.0.0-rc14"
+    mkdir -p $(dirname $BOOT_CACHE_PATH)
+    curl --silent --show-error --max-time 120 -L -o "BOOT_CACHE_PATH" $BOOT_URL
+else
+    echo "-----> Using cached Boot 2.0.0-rc14"
+fi
+
+mkdir -p "$BUILD_DIR/.boot"
+cp "$BOOT_CACHE_PATH" "$BOOT_SLUG_PATH"
+
 # unpack existing cache
 CACHE_STORE_DIR=$CACHE_DIR"/.m2"
 CACHE_TARGET_DIR=$BUILD_DIR"/.m2"
@@ -113,7 +130,7 @@ else
   mkdir -p $CACHE_TARGET_DIR
 fi
 
-echo "-----> Building with Leiningen"
+echo "-----> Building"
 
 # extract environment
 if [ -d "$ENV_DIR" ]; then
@@ -159,7 +176,7 @@ mkdir -p $(dirname $PROFILE_PATH)
 
 echo "export JVM_OPTS=\"\${JVM_OPTS:--Xmx400m -Dfile.encoding=UTF-8}\"" >> $PROFILE_PATH
 echo "export LEIN_NO_DEV=\"\${LEIN_NO_DEV:-yes}\"" >> $PROFILE_PATH
-echo 'export PATH="$HOME/.jdk/bin:$HOME/.lein/bin:$PATH"' >> $PROFILE_PATH
+echo 'export PATH="$HOME/.jdk/bin:$HOME/.lein/bin:$HOME/.boot:$PATH"' >> $PROFILE_PATH
 
 # default Procfile
 if [ ! -r $BUILD_DIR/Procfile ]; then
