@@ -123,6 +123,8 @@ cp "$BOOT_CACHE_PATH" "$BOOT_SLUG_PATH"
 export PATH=$(dirname $BOOT_SLUG_PATH):$PATH
 echo "PATH:  $PATH"
 
+export BOOT_JVM_OPTIONS="-client -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -Xmx500m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -Xverify:none"
+
 # unpack existing cache
 CACHE_STORE_DIR=$CACHE_DIR"/.m2"
 CACHE_TARGET_DIR=$BUILD_DIR"/.m2"
