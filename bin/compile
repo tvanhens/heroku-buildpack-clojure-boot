@@ -119,6 +119,8 @@ fi
 
 mkdir -p "$BUILD_DIR/.boot"
 cp "$BOOT_CACHE_PATH" "$BOOT_SLUG_PATH"
+export PATH=$BOOT_SLUG_PATH:$PATH
+echo "PATH:  $PATH"
 
 # unpack existing cache
 CACHE_STORE_DIR=$CACHE_DIR"/.m2"
