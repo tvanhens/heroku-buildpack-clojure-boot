@@ -112,7 +112,7 @@ if [ ! -r "$BOOT_CACHE_PATH" ]; then
     echo "-----> Installing Boot"
     echo "       Downloading: 2.0.0-rc14"
     mkdir -p $(dirname $BOOT_CACHE_PATH)
-    curl --silent --show-error --max-time 120 -L -o "BOOT_CACHE_PATH" $BOOT_URL
+    curl --silent --show-error --max-time 120 -L -o "$BOOT_CACHE_PATH" $BOOT_URL
 else
     echo "-----> Using cached Boot 2.0.0-rc14"
 fi
